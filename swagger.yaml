@@ -1,0 +1,433 @@
+swagger: '2.0'
+info:
+   title: Bank Argent API documentation
+   description: Contains all available API endpoints in this codebase
+   version: '1.0.0'
+   termsOfService: 'http://swagger.io/terms/'
+host: localhost:3001
+basePath: /api/v1
+schemes:
+   - http
+paths:
+   /user/login:
+      post:
+         tags:
+            - User Module
+         summary: Login
+         description: API for Login
+         parameters:
+            - in: body
+              name: body
+              description: Login Payload
+              required: true
+              schema:
+                 $ref: '#/definitions/Login'
+         produces:
+            - application/json
+         responses:
+            '200':
+               description: Login Successfully
+               schema:
+                  $ref: '#/definitions/LoginResponse'
+            '400':
+               description: Bad Request
+            '500':
+               description: Internal Server Error
+   /user/signup:
+      post:
+         tags:
+            - User Module
+         summary: Signup
+         description: API for Signup
+         parameters:
+            - in: body
+              name: body
+              description: Signup Payload
+              required: true
+              schema:
+                 $ref: '#/definitions/User'
+         produces:
+            - application/json
+         responses:
+            '200':
+               description: Signup Successfully
+               schema:
+                  $ref: '#/definitions/ApiResponse'
+            '400':
+               description: Bad Request
+            '500':
+               description: Internal Server Error
+   /user/profile:
+      post:
+         security:
+            - Bearer: []
+         tags:
+            - User Module
+         summary: User Profile API
+         description: API for fetching a user profile
+         parameters:
+            - in: header
+              name: Authorization
+              type: string
+              description: Attach Bearer JWT token
+              required: true
+         produces:
+            - application/json
+         responses:
+            '200':
+               description: User profile retrieved successully
+               schema:
+                  $ref: '#/definitions/ApiResponse'
+            '400':
+               description: Bad Request
+            '500':
+               description: Internal Server Error
+      put:
+         security:
+            - Bearer: []
+         tags:
+            - User Module
+         summary: User Profile API
+         description: API for updating a user profile
+         parameters:
+            - in: header
+              name: Authorization
+              type: string
+              description: Attach Bearer JWT token
+              required: true
+            - in: body
+              name: body
+              description: Update user profile attributes
+              required: true
+              schema:
+                 $ref: '#/definitions/UserProfile'
+         produces:
+            - application/json
+         responses:
+            '200':
+               description: User profile retrieved successully
+               schema:
+                  $ref: '#/definitions/ApiResponse'
+            '400':
+               description: Bad Request
+            '500':
+               description: Internal Server Error
+   /user/profile/{bankAccountId}/transactions:
+      get:
+         security:
+            - Bearer: []
+         tags:
+            - Transaction Module
+         summary: Current month transactions
+         description: API for fetching user transactions for the current month
+         parameters:
+            - in: header
+              name: Authorization
+              type: string
+              description: Attach Bearer JWT token
+              required: true
+            - in: path
+              name: bankAccountId
+              type: string
+              description: Bank Account ID
+              required: true
+
+         produces:
+            - application/json
+         responses:
+            '200':
+               description: User transactions retrieved successully
+               schema:
+                  $ref: '#/definitions/ApiResponseTransactions'
+            '400':
+               description: Bad Request
+            '500':
+               description: Internal Server Error
+            '503':
+               description: 'Service Unavailable'
+   /user/profile/{bankAccountId}/transactions/{id}:
+      get:
+         security:
+            - Bearer: []
+         tags:
+            - Transaction Module
+         summary: Specific transaction
+         description: API for fetching a single user transaction
+         parameters:
+            - in: header
+              name: Authorization
+              type: string
+              description: Attach Bearer JWT token
+              required: true
+            - in: path
+              name: bankAccountId
+              type: string
+              description: Bank Account ID
+              required: true
+            - in: path
+              name: id
+              type: string
+              description: Transaction ID
+              required: true
+         produces:
+            - application/json
+         responses:
+            '200':
+               description: User transaction retrieved successully
+               schema:
+                  $ref: '#/definitions/UserSingleTransaction'
+            '400':
+               description: Bad Request
+            '404':
+               description: 'Transaction not found'
+            '500':
+               description: Internal Server Error
+            '503':
+               description: 'Service Unavailable'
+      post:
+         security:
+            - Bearer: []
+         tags:
+            - Transaction Module
+         summary: Add informations about a transaction
+         description: API for adding particular informations (category and notes) about a transaction
+         parameters:
+            - in: header
+              name: Authorization
+              type: string
+              description: Attach Bearer JWT token
+              required: true
+            - in: path
+              name: bankAccountId
+              type: string
+              description: Bank Account ID
+              required: true
+            - in: path
+              name: id
+              type: string
+              description: Transaction ID
+              required: true
+            - in: body
+              name: body
+              description: Create user transaction informations
+              required: true
+              schema:
+                 $ref: '#/definitions/TransactionInfo'
+         produces:
+            - application/json
+         responses:
+            '200':
+               description: Transaction informations added successully
+               schema:
+                  $ref: '#/definitions/UserSingleTransaction'
+            '400':
+               description: Bad Request
+            '500':
+               description: Internal Server Error
+      patch:
+         security:
+            - Bearer: []
+         tags:
+            - Transaction Module
+         summary: Update transaction informations
+         description: API for updating particular informations (category and notes) about a user transaction
+         parameters:
+            - in: header
+              name: Authorization
+              type: string
+              description: Attach Bearer JWT token
+              required: true
+            - in: path
+              name: bankAccountId
+              type: string
+              description: Bank Account ID
+              required: true
+            - in: path
+              name: id
+              type: string
+              description: Transaction ID
+              required: true
+            - in: body
+              name: body
+              description: Update user transaction attributes
+              required: true
+              schema:
+                 $ref: '#/definitions/TransactionInfo'
+         produces:
+            - application/json
+         responses:
+            '200':
+               description: Transaction informations updated successully
+               schema:
+                  $ref: '#/definitions/UserSingleTransaction'
+            '400':
+               description: Bad Request
+            '403':
+               description: 'Forbidden'
+            '404':
+               description: 'Transaction not found'
+            '500':
+               description: Internal Server Error
+      delete:
+         security:
+            - Bearer: []
+         tags:
+            - Transaction Module
+         summary: Delete transaction informations
+         description: API for deleting user transaction informations (category and notes)
+         parameters:
+            - in: header
+              name: Authorization
+              type: string
+              description: Attach Bearer JWT token
+              required: true
+            - in: path
+              name: bankAccountId
+              type: string
+              description: Bank Account ID
+              required: true
+            - in: path
+              name: id
+              type: string
+              description: Transaction ID
+              required: true
+         produces:
+            - application/json
+         responses:
+            '200':
+               description: Transaction informations deleted successully
+               schema:
+                  type: object
+                  properties:
+                     status:
+                        type: integer
+                        example: 200
+                     message:
+                        type: string
+                        example: Success
+            '400':
+               description: Bad Request
+            '403':
+               description: 'Forbidden'
+            '404':
+               description: 'Transaction not found'
+            '500':
+               description: Internal Server Error
+
+securityDefinitions:
+   Bearer:
+      type: apiKey
+      name: Authorization
+      in: header
+definitions:
+   User:
+      properties:
+         email:
+            type: string
+            description: user email
+         password:
+            type: string
+            description: user password
+         firstName:
+            type: string
+            description: user first name
+         lastName:
+            type: string
+            description: user last name
+   Login:
+      properties:
+         email:
+            type: string
+            description: user email
+         password:
+            type: string
+            description: user password
+   ApiResponse:
+      type: object
+      properties:
+         status:
+            type: integer
+         message:
+            type: string
+         body:
+            type: object
+            properties:
+               id:
+                  type: string
+               email:
+                  type: string
+   LoginResponse:
+      type: object
+      properties:
+         token:
+            type: string
+   UserProfile:
+      type: object
+      properties:
+         firstName:
+            type: string
+         lastName:
+            type: string
+   ApiResponseTransactions:
+      type: object
+      properties:
+         status:
+            type: integer
+         message:
+            type: string
+         transactions:
+            type: array
+            items:
+               type: object
+               properties:
+                  id:
+                     type: string
+                     description: Transaction ID
+                  date:
+                     type: string
+                     description: Date of the transaction
+                  description:
+                     type: string
+                     description: Description of the transaction
+                  amount:
+                     type: number
+                     description: Amount of the transaction
+                  balance:
+                     type: number
+                     description: Balance of the account after the transaction
+   UserSingleTransaction:
+      type: object
+      properties:
+         id:
+            type: string
+            description: Transaction ID
+         date:
+            type: string
+            description: Date of the transaction
+         description:
+            type: string
+            description: Description of the transaction
+         amount:
+            type: number
+            description: Amount of the transaction
+         balance:
+            type: number
+            description: Balance of the account after the transaction
+         transactionType:
+            type: string
+            description: Type of transaction
+         category:
+            type: string
+            description: Category of the transaction
+         notes:
+            type: string
+            description: Notes about the transaction
+   TransactionInfo:
+      type: object
+      properties:
+         category:
+            type: string
+            description: Category of the transaction
+         notes:
+            type: string
+            description: Notes about the transaction
