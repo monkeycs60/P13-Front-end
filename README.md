@@ -53,7 +53,7 @@ Sign In is not implemented yet. The user can log in with the following credentia
   Open your preferred web browser and navigate to
 
   ```bash
-  http://127.0.0.1:5173/
+  http://127.0.0.1:5174/
   ```
 
   **Vite** will automatically open the browser for you
