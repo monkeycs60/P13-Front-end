@@ -35,6 +35,26 @@ Sign In is not implemented yet. The user can log in with the following credentia
 
 ## Installation
 
+- Clone this back-end repository:
+
+  ```bash
+  git clone https://github.com/OpenClassrooms-Student-Center/Project-10-Bank-API.git
+
+  ```
+
+  run the following commands in the cloned repo:
+
+  ```bash
+  # Install dependencies
+npm install
+
+# Start local dev server
+npm run dev:server
+
+# Populate database with two users
+npm run populate-db
+  ```
+
 
 - Frontend installation:
 
