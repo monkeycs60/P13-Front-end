@@ -42,19 +42,19 @@ Sign In is not implemented yet. The user can log in with the following credentia
 
   ```
 
-run the following commands in the cloned repo:
+  run the following commands in the cloned repo:
 
-  ```bash
-npm install
-```	
+    ```bash
+  npm install
+  ```	
 
-  ```bash
-npm run dev:server
-  ```
+    ```bash
+  npm run dev:server
+    ```
 
-  ```bash
-npm run populate-db
-  ```
+    ```bash
+  npm run populate-db
+    ```
 
 
 - Frontend installation:
